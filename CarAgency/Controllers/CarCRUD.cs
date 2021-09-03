@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using CarAgency.Models;
-
 namespace CarAgency.Controllers
 {
     class CarCRUD: ICRUD<Car>
     {
-
         private string Path;
-
         public CarCRUD(string path)
         {
             Path = path;
         }
-
         private List<Car> carList = new List<Car>();
         public Car Create(Car car)
         {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace CarAgency
+﻿namespace CarAgency
 {
     class Settings
     {
