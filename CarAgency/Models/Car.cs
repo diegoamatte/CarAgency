@@ -6,11 +6,11 @@ namespace CarAgency.Models
 {
     class Car
     {
-        public int Id;
-        public Brand Brand;
-        public string Model;
-        public byte Doors;
-        public string Color;
-        public Transmission Transmission;
+        public int Id { get; set; }
+        public Brand Brand { get; set; }
+        public string Model { get; set; }
+        public byte Doors { get; set; }
+        public string Color { get; set; }
+        public Transmission Transmission { get; set; }
     }
 }
