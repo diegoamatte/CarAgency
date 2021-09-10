@@ -64,8 +64,7 @@ Select your option:
         {
             string text = @"Input the car ID:";
             Console.WriteLine(text);
-            var input = Int32.Parse(Console.ReadLine());
-            Car car = Crud.Get(input);
+            var car = GetCarByUserInput();
             string carText = "";
             if (car != null) 
             {
@@ -86,7 +85,9 @@ Transmission: {car.Transmission}";
         }
         private void UpdateCar()
         {
-            var car = ShowCar();
+            string text = @"Input the car ID:";
+            Console.WriteLine(text);
+            var car = GetCarByUserInput();
             if(car!=null)
             {
                 int id = car.Id;
@@ -99,8 +100,8 @@ Transmission: {car.Transmission}";
         {
             var deleteText = "Input the Car Id to delete:";
             Console.WriteLine(deleteText);
-            var id = Int32.Parse(Console.ReadLine());
-            Crud.Delete(id);
+            var car = GetCarByUserInput();
+            Crud.Delete(car.Id);
         }
         private Car InputData()
         {
@@ -128,6 +129,23 @@ Transmission: {car.Transmission}";
             Console.WriteLine(transmissionType);
             var transmission = Int32.Parse(Console.ReadLine());
             car.Transmission = (Transmission)(Enum.IsDefined(typeof(Transmission), transmission) ? transmission : 1);
+            return car;
+        }
+        private Car GetCarByUserInput()
+        {
+            Car car;
+            try
+            {
+                var id = Int32.Parse(Console.ReadLine());
+                car = Crud.Get(id);
+            }
+            catch (FormatException)
+            {
+                //If format fails, returns car with invalid Id to not affect crud operations.
+                Console.WriteLine("Invalid ID format");
+                car = new Car();
+                car.Id = -1;
+            }
             return car;
         }
     }
