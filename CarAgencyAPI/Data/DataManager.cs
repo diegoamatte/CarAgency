@@ -1,6 +1,7 @@
 ﻿using System.IO;
-using System.Collections.Generic;
 using System.Text.Json;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CarAgencyAPI.Data
 {
@@ -13,18 +14,12 @@ namespace CarAgencyAPI.Data
             _path = path;
         }
 
-        public T Save(T t)
+        public void SaveData(IList<T> items)
         {
-            IList<T> items = GetItems();
-            if (items.IndexOf(t) == -1)
-            {
-                items.Add(t);
-                File.WriteAllText(_path, JsonSerializer.Serialize(items));
-            }
-            return t;
+            File.WriteAllText(_path, JsonSerializer.Serialize(items));
         }
 
-        public IList<T> GetItems()
+        public IList<T> ReadData()
         {
             IList<T> data = new List<T>();
             if (File.Exists(_path))
@@ -34,30 +29,6 @@ namespace CarAgencyAPI.Data
             }
             return data;
         }
-
-        public T GetItem(int id)
-        {
-            var items = GetItems();
-            T item = default(T);
-            if (items.Count > id && id >= 0)
-            {
-                item = items[id];
-            }
-            return item;
-        }
-
-        public T UpdateItem(T t, int id)
-        {
-            var items = GetItems();
-            items.Insert(id, t);
-            return t;
-        }
-
-        public void DeleteItem(int id)
-        {
-            var items = GetItems();
-            items.RemoveAt(id);
-        }
-
+                
     }
 }

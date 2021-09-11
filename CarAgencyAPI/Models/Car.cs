@@ -1,4 +1,6 @@
-﻿namespace CarAgencyAPI.Models
+﻿using CarAgencyAPI.Data;
+
+namespace CarAgencyAPI.Models
 {
     public class Car
     {
