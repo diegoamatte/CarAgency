@@ -1,6 +1,6 @@
-﻿namespace CarAgency.Models
+﻿namespace CarAgencyAPI.Models
 {
-    enum Brand
+    public enum Brand
     {
         FIAT = 0,
         FORD = 1,

@@ -1,6 +1,8 @@
-﻿namespace CarAgency.Models
+﻿using CarAgencyAPI.Data;
+
+namespace CarAgencyAPI.Models
 {
-    class Car
+    public class Car
     {
         public int Id { get; set; }
         public Brand Brand { get; set; }
