@@ -7,49 +7,49 @@ namespace CarAgencyAPI.Data
 {
     public class CarCRUD : ICRUD<Car>
     {
-        private DataManager<Car> data;
-        private IList<Car> carsList;
+        private DataManager<Car> _data;
+
+        private IList<Car> _carsList;
+
         public CarCRUD(IConfiguration configuration)
         {
-             data = new DataManager<Car>(configuration["Paths:Cars"]);
-             carsList = data.ReadData();
+             _data = new DataManager<Car>(configuration["Paths:Cars"]);
+             _carsList = _data.ReadData();
         }
 
         public Car Create(Car car)
         {
-            carsList.Add(car);
-            Save();
+            car.Id = _carsList.LastOrDefault() is not null ? _carsList.Last().Id + 1 : 1;
+            _carsList.Add(car);
+            _data.SaveData(_carsList);
             return car;
         }
 
         public void Delete(int id)
         {
-            var carToDelete = carsList.Where(car => car.Id == id).FirstOrDefault();
-            carsList.Remove(carToDelete);
-            Save();
+            var carToDelete = _carsList.Where(car => car.Id == id).FirstOrDefault();
+            _carsList.Remove(carToDelete);
+            _data.SaveData(_carsList);
         }
 
         public Car GetById(int id)
         {
-            return carsList.Where(car => car.Id == id).FirstOrDefault();
+            return _carsList.Where(car => car.Id == id).FirstOrDefault();
         }
 
         public Car Update(Car car,int id)
         {
-            var carIndex = carsList.IndexOf(GetById(car.Id));
-            carsList[carIndex] = car;
-            Save();
+            var carIndex = _carsList.IndexOf(GetById(id));
+            car.Id = id;
+            _carsList[carIndex] = car;
+            _data.SaveData(_carsList);
             return car;
         }
 
         public IEnumerable<Car> GetAll()
         {
-            return carsList;
+            return _carsList;
         }
 
-        private void Save()
-        {
-            data.SaveData(carsList);
-        }
     }
 }

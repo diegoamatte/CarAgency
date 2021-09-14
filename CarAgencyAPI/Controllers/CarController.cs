@@ -8,6 +8,7 @@ namespace CarAgencyAPI.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICRUD<Car> _carCRUD;
+
         public CarController(ICRUD<Car> carCRUD)
         {
             _carCRUD = carCRUD;
@@ -15,17 +16,17 @@ namespace CarAgencyAPI.Controllers
 
         // GET: api/<CarController>
         [HttpGet]
-        public ActionResult Get()
+        public IActionResult Get()
         {
             return Ok(_carCRUD.GetAll());
         }
 
         // GET api/<CarController>/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public IActionResult Get(int id)
         {
             var car = _carCRUD.GetById(id);
-            if (car == null)
+            if (car is null)
             {
                 return NotFound();
             }
@@ -34,25 +35,20 @@ namespace CarAgencyAPI.Controllers
 
         // POST api/<CarController>
         [HttpPost]
-        public IActionResult Post(Car car)
+        public IActionResult Post(CarDTO carDto)
         {
-            if(_carCRUD.GetById(car.Id) != null)
-            {
-                return Conflict();
-            }
-            return Created("/api/car", _carCRUD.Create(car));
+            return Created("/api/car", _carCRUD.Create(carDto.ToCar()));
         }
 
         // PUT api/<CarController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Car car)
+        public IActionResult Put(int id, CarDTO carDto)
         {
-            var carToUpdate = _carCRUD.GetById(id);
-            if(carToUpdate == null)
+            if(_carCRUD.GetById(id) is null)
             {
                 return NotFound();
             }
-            _carCRUD.Update(car,id);
+            _carCRUD.Update(carDto.ToCar(),id);
             return NoContent();
         }
 
@@ -60,9 +56,12 @@ namespace CarAgencyAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (id < 0) return BadRequest();
+            if(_carCRUD.GetById(id) is null)
+            {
+                return NotFound();
+            }
             _carCRUD.Delete(id);
-            return Ok();
+            return NoContent();
         }
     }
 }
