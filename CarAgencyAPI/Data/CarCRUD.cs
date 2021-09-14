@@ -19,6 +19,7 @@ namespace CarAgencyAPI.Data
 
         public Car Create(Car car)
         {
+            car.Id = _carsList.LastOrDefault() is not null ? _carsList.Last().Id + 1 : 1;
             _carsList.Add(car);
             _data.SaveData(_carsList);
             return car;
@@ -38,7 +39,8 @@ namespace CarAgencyAPI.Data
 
         public Car Update(Car car,int id)
         {
-            var carIndex = _carsList.IndexOf(GetById(car.Id));
+            var carIndex = _carsList.IndexOf(GetById(id));
+            car.Id = id;
             _carsList[carIndex] = car;
             _data.SaveData(_carsList);
             return car;

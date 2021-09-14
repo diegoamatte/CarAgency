@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using CarAgencyAPI.Models;
 using CarAgencyAPI.Data;
+using System.Text.Json.Serialization;
 
 namespace CarAgencyAPI
 {
@@ -24,7 +25,9 @@ namespace CarAgencyAPI
             services.AddScoped<ICRUD<Car>,CarCRUD>();
             services.AddScoped<ICRUD<Client>,ClientCRUD>();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarAgencyAPI", Version = "v1" });
