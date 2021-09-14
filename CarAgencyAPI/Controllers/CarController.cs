@@ -8,6 +8,7 @@ namespace CarAgencyAPI.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICRUD<Car> _carCRUD;
+
         public CarController(ICRUD<Car> carCRUD)
         {
             _carCRUD = carCRUD;
