@@ -29,20 +29,20 @@ namespace CarAgencyAPI.Data
             Save();
         }
 
-        public Car Get(int id)
+        public Car GetById(int id)
         {
             return carsList.Where(car => car.Id == id).FirstOrDefault();
         }
 
         public Car Update(Car car)
         {
-            var carIndex = carsList.IndexOf(Get(car.Id));
+            var carIndex = carsList.IndexOf(GetById(car.Id));
             carsList[carIndex] = car;
             Save();
             return car;
         }
 
-        public IEnumerable<Car> GetAll()
+        public IList<Car> GetAll()
         {
             return carsList;
         }

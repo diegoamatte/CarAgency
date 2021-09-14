@@ -24,7 +24,7 @@ namespace CarAgencyAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var car = _carCRUD.Get(id);
+            var car = _carCRUD.GetById(id);
             if (car == null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace CarAgencyAPI.Controllers
         [HttpPost]
         public IActionResult Post(Car car)
         {
-            if(_carCRUD.Get(car.Id) != null)
+            if(_carCRUD.GetById(car.Id) != null)
             {
                 return Conflict();
             }
@@ -47,7 +47,7 @@ namespace CarAgencyAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Car car)
         {
-            var carToUpdate = _carCRUD.Get(id);
+            var carToUpdate = _carCRUD.GetById(id);
             if(carToUpdate == null)
             {
                 return NotFound();
