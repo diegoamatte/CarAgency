@@ -23,6 +23,7 @@ namespace CarAgencyAPI
         {
             services.AddScoped<ICRUD<Car>,CarCRUD>();
             services.AddScoped<ICRUD<Client>,ClientCRUD>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

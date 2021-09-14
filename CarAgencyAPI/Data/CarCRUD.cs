@@ -34,7 +34,7 @@ namespace CarAgencyAPI.Data
             return carsList.Where(car => car.Id == id).FirstOrDefault();
         }
 
-        public Car Update(Car car)
+        public Car Update(Car car,int id)
         {
             var carIndex = carsList.IndexOf(GetById(car.Id));
             carsList[carIndex] = car;
@@ -42,7 +42,7 @@ namespace CarAgencyAPI.Data
             return car;
         }
 
-        public IList<Car> GetAll()
+        public IEnumerable<Car> GetAll()
         {
             return carsList;
         }

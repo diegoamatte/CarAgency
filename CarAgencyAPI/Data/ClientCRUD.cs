@@ -42,14 +42,15 @@ namespace CarAgencyAPI.Data
             return _clientsList.Where(client => client.Id == id).FirstOrDefault();
         }
 
-        public IList<Client> GetAll()
+        public IEnumerable<Client> GetAll()
         {
-            return _clientsList.OrderBy(client => client.DNI).ToList();
+            return _clientsList.ToList().OrderBy(client => client.DNI);
         }
 
-        public Client Update(Client client)
+        public Client Update(Client client,int id)
         {
             client.LastUpdate = DateTime.Now;
+            client.Id = id;
             var index = _clientsList.IndexOf(GetById(client.Id));
             _clientsList[index] = client;
             _data.SaveData(_clientsList);

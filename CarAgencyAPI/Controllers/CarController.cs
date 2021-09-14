@@ -52,7 +52,7 @@ namespace CarAgencyAPI.Controllers
             {
                 return NotFound();
             }
-            _carCRUD.Update(car);
+            _carCRUD.Update(car,id);
             return NoContent();
         }
 

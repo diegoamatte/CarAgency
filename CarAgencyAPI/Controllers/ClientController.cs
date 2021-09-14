@@ -17,14 +17,14 @@ namespace CarAgencyAPI.Controllers
 
         // GET: api/<ClientController>
         [HttpGet]
-        public ActionResult Get()
+        public IActionResult Get()
         {
             return Ok(_clientCRUD.GetAll());
         }
 
         // GET api/<ClientController>/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public IActionResult Get(int id)
         {
             var client = _clientCRUD.GetById(id);
             if (client is null)
@@ -36,25 +36,24 @@ namespace CarAgencyAPI.Controllers
 
         // POST api/<ClientController>
         [HttpPost]
-        public IActionResult Post(Client client)
+        public IActionResult Post(ClientDTO client)
         {
-            if  (_clientCRUD.GetAll().ToList().Find(x=>x.DNI == client.DNI) is not null || _clientCRUD.GetById(client.Id) is not null)
+            if  (_clientCRUD.GetAll().Where(x=>x.DNI == client.DNI).FirstOrDefault() is not null)
             {
                 return Conflict();
             }
-            return Created("/api/client", _clientCRUD.Create(client));
+            return Created("/api/client", _clientCRUD.Create(client.ToClient()));
         }
 
         // PUT api/<ClientController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Client client)
+        public IActionResult Put(int id, ClientDTO client)
         {
             if (_clientCRUD.GetById(id) is null)
             {
                 return NotFound();
             }
-            client.Id = id;
-            _clientCRUD.Update(client);
+            _clientCRUD.Update(client.ToClient(),id);
             return NoContent();
         }
 
