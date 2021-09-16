@@ -24,6 +24,7 @@ namespace CarAgencyAPI
         {
             services.AddScoped<ICRUD<Car>,CarCRUD>();
             services.AddScoped<ICRUD<Client>,ClientCRUD>();
+            services.AddScoped<ICRUD<Rental>,RentalCRUD>();
 
             services.AddControllers()
                 .AddJsonOptions(options =>
