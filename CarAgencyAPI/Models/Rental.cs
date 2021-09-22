@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarAgencyAPI.Models
 {
@@ -6,11 +7,14 @@ namespace CarAgencyAPI.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public short RentDays { get; set; }
 
-        public int ClientID { get; set; }
+        [Required]
+        public Client Client { get; set; }
 
-        public int CarID { get; set; }
+        [Required]
+        public Car Car { get; set; }
 
         public DateTime ReturnDate { get; set; }
 

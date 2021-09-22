@@ -8,53 +8,54 @@ namespace CarAgencyAPI.Data
 {
     public class ClientCRUD : ICRUD<Client>
     {
-        private DataManager<Client> _data;
+        private readonly CarAgencyContext _context;
 
-        private IList<Client> _clientsList;
-
-        public ClientCRUD(IConfiguration configuration)
+        public ClientCRUD(CarAgencyContext context)
         {
-            _data = new DataManager<Client>(configuration["Paths:Clients"]);
-            _clientsList = _data.ReadData();
+            _context = context;
         }
 
         public Client Create(Client client)
         {
-            client.Id = _clientsList.LastOrDefault() is not null ? _clientsList.Last().Id +1 : 1;
-            client.LastUpdate = DateTime.Now;
-            _clientsList.Add(client);
-            _data.SaveData(_clientsList);
+            _context.Clients.Add(client);
+            _context.SaveChanges();
             return client;
         }
 
         public void Delete(int id)
         {
-            var clientToDelete = GetById(id);
-            if(clientToDelete is not null)
+            var client = GetById(id);
+            if(client is not null)
             {
-                _clientsList.Remove(clientToDelete);
-                _data.SaveData(_clientsList);
+                _context.Clients.Remove(client);
+                _context.SaveChanges();
             }
         }
 
         public Client GetById(int id)
         {
-            return _clientsList.Where(client => client.Id == id).FirstOrDefault();
+            return _context.Clients.Find(id);
         }
 
         public IEnumerable<Client> GetAll()
         {
-            return _clientsList.ToList().OrderBy(client => client.DNI);
+            return _context.Clients.OrderBy(client => client.DNI);
         }
 
         public Client Update(Client client,int id)
         {
-            client.LastUpdate = DateTime.Now;
-            client.Id = id;
-            var index = _clientsList.IndexOf(GetById(client.Id));
-            _clientsList[index] = client;
-            _data.SaveData(_clientsList);
-            return client;
+            var updatedClient = GetById(id);
+            updatedClient.Address = client.Address;
+            updatedClient.City = client.City;
+            updatedClient.DNI = client.DNI;
+            updatedClient.Name = client.Name;
+            updatedClient.PhoneNumber = client.PhoneNumber;
+            updatedClient.State = client.State;
+            updatedClient.Surname = client.Surname;
+            updatedClient.ZipCode = client.ZipCode;
+            updatedClient.LastUpdate = DateTime.Now;
+            _context.SaveChanges();
+            return updatedClient;
         }
     }
 }

@@ -33,25 +33,35 @@ namespace CarAgencyAPI.Controllers
             {
                 return NotFound();
             }
-            return Ok(_rentalCrud.Populate(rental));
+            return Ok(rental);
         }
 
         // POST api/<RentalController>
         [HttpPost]
-        public IActionResult Post(CreateRentalDTO rentalDto)
+        public IActionResult Post(RentalDTO rental)
         {
-            return Created("api/Rental", _rentalCrud.Create(rentalDto.ToRental()));
+            var newRental = _rentalCrud.DTOToRental(rental);
+            if(newRental.Car is null || newRental.Client is null)
+            {
+                return BadRequest();
+            }
+            return Created(nameof(newRental),_rentalCrud.Create(newRental));
         }
 
         // PUT api/<RentalController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, UpdateRentalDTO updateDto)
+        public IActionResult Put(int id, RentalDTO rental)
         {
-            if (_rentalCrud.GetById(id) is null)
+            var updatedRental = _rentalCrud.DTOToRental(rental);
+            if (updatedRental is null)
             {
                 return NotFound();
             }
-            _rentalCrud.Update(updateDto.ToRental(), id);
+            if (updatedRental.Car is null || updatedRental.Client is null)
+            {
+                return BadRequest();
+            }
+            _rentalCrud.Update(updatedRental, id);
             return NoContent();
         }
 
@@ -59,7 +69,6 @@ namespace CarAgencyAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-
             if (_rentalCrud.GetById(id) == null)
             {
                 return NotFound();
@@ -67,5 +76,6 @@ namespace CarAgencyAPI.Controllers
             _rentalCrud.Delete(id);
             return NoContent();
         }
+
     }
 }
