@@ -37,7 +37,7 @@ namespace CarAgencyAPI.Controllers
         [HttpPost]
         public IActionResult Post(CarDTO carDto)
         {
-            return Created("/api/car", _carCRUD.Create(carDto.ToCar()));
+            return Created(nameof(carDto), _carCRUD.Create(carDto.ToCar()));
         }
 
         // PUT api/<CarController>/5

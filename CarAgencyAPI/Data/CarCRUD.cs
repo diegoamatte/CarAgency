@@ -7,48 +7,51 @@ namespace CarAgencyAPI.Data
 {
     public class CarCRUD : ICRUD<Car>
     {
-        private DataManager<Car> _data;
+        private readonly CarAgencyContext _context;
 
-        private IList<Car> _carsList;
-
-        public CarCRUD(IConfiguration configuration)
+        public CarCRUD(CarAgencyContext context)
         {
-             _data = new DataManager<Car>(configuration["Paths:Cars"]);
-             _carsList = _data.ReadData();
+            _context = context;
         }
 
         public Car Create(Car car)
         {
-            car.Id = _carsList.LastOrDefault() is not null ? _carsList.Last().Id + 1 : 1;
-            _carsList.Add(car);
-            _data.SaveData(_carsList);
+            _context.Cars.Add(car);
+            _context.SaveChanges();
             return car;
         }
 
         public void Delete(int id)
         {
-            var carToDelete = _carsList.Where(car => car.Id == id).FirstOrDefault();
-            _carsList.Remove(carToDelete);
-            _data.SaveData(_carsList);
+            var car = GetById(id);
+
+            if (car is not null)
+            {
+                _context.Cars.Remove(car);
+                _context.SaveChanges();
+            }
         }
 
         public Car GetById(int id)
         {
-            return _carsList.Where(car => car.Id == id).FirstOrDefault();
+            return _context.Cars.Find(id);
         }
 
         public Car Update(Car car,int id)
         {
-            var carIndex = _carsList.IndexOf(GetById(id));
-            car.Id = id;
-            _carsList[carIndex] = car;
-            _data.SaveData(_carsList);
-            return car;
+            var updatedCar = GetById(id);
+            updatedCar.Brand = car.Brand;
+            updatedCar.Color = car.Color;
+            updatedCar.Doors = car.Doors;
+            updatedCar.Transmission = car.Transmission;
+            updatedCar.Model = car.Model;
+            _context.SaveChanges();
+            return updatedCar;
         }
 
         public IEnumerable<Car> GetAll()
         {
-            return _carsList;
+            return _context.Cars;
         }
 
     }

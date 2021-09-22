@@ -42,7 +42,7 @@ namespace CarAgencyAPI.Controllers
             {
                 return Conflict();
             }
-            return Created("/api/client", _clientCRUD.Create(client.ToClient()));
+            return Created(nameof(client), _clientCRUD.Create(client.ToClient()));
         }
 
         // PUT api/<ClientController>/5

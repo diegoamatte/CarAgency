@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using CarAgencyAPI.Models;
 using CarAgencyAPI.Data;
 using System.Text.Json.Serialization;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarAgencyAPI
 {
@@ -25,6 +27,8 @@ namespace CarAgencyAPI
             services.AddScoped<ICRUD<Car>,CarCRUD>();
             services.AddScoped<ICRUD<Client>,ClientCRUD>();
             services.AddScoped<ICRUD<Rental>,RentalCRUD>();
+
+            services.AddDbContext<CarAgencyContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("CarsAgency")));
 
             services.AddControllers()
                 .AddJsonOptions(options =>

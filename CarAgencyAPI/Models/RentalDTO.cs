@@ -2,15 +2,13 @@
 
 namespace CarAgencyAPI.Models
 {
-    public class PopulatedRental
+    public class RentalDTO
     {
-        public int Id { get; set; }
-
         public short RentDays { get; set; }
 
-        public Client Client { get; set; }
+        public int ClientID { get; set; }
 
-        public Car Car { get; set; }
+        public int CarID { get; set; }
 
         public DateTime ReturnDate { get; set; }
 
